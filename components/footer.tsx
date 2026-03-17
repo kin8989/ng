@@ -1,156 +1,107 @@
 import Link from "next/link"
-import { Twitter, Linkedin, Instagram, Facebook } from "lucide-react"
-import Image from "next/image"
+import { Twitter, Linkedin, Instagram, Facebook, ArrowRight } from "lucide-react"
 
 const footerLinks = {
-  product: [
-    { label: "Search", href: "#" },
-    { label: "List", href: "#" },
-    { label: "Pricing", href: "#" },
-    { label: "App", href: "#" },
+  platform: [
+    { label: "Tính năng", href: "#features" },
+    { label: "Hệ sinh thái", href: "#principles" },
+    { label: "Đối tác", href: "#testimonials" },
+    { label: "Dashboard", href: "#" },
   ],
   company: [
-    { label: "About", href: "#" },
-    { label: "Careers", href: "#" },
-    { label: "Press", href: "#" },
+    { label: "Về chúng tôi", href: "#about" },
+    { label: "Tuyển dụng", href: "#" },
+    { label: "Báo chí", href: "#" },
     { label: "Blog", href: "#" },
   ],
   legal: [
-    { label: "Terms", href: "#" },
-    { label: "Privacy", href: "#" },
-    { label: "Cookies", href: "#" },
-    { label: "Legal", href: "#" },
+    { label: "Điều khoản", href: "#" },
+    { label: "Bảo mật", href: "#" },
+    { label: "Cookie", href: "#" },
+    { label: "Pháp lý", href: "#" },
   ],
   support: [
-    { label: "Help Center", href: "#" },
-    { label: "Contact", href: "#" },
-    { label: "FAQ", href: "#" },
-    { label: "Report", href: "#" },
+    { label: "Trung tâm hỗ trợ", href: "#" },
+    { label: "Liên hệ", href: "#" },
+    { label: "FAQ", href: "#faq" },
+    { label: "Onboarding", href: "#" },
   ],
 }
 
 export function Footer() {
   return (
-    <div className="relative">
-      <div className="absolute -top-[20vw] left-0 right-0 w-full h-[50vw] z-0 overflow-hidden">
-        <Image src="/images/footer-bg.png" alt="Tuscan landscape" fill className="object-cover" priority />
-      </div>
-
-      <div className="absolute -top-[15vw] left-0 right-0 flex items-end justify-center overflow-visible pointer-events-none z-10">
-        <h2 className="font-bold text-center text-[10vw] lg:text-[12vw] leading-[0.85] tracking-tighter text-white whitespace-nowrap">
+    <div className="relative" style={{ background: "#000d40" }}>
+      {/* Big wordmark */}
+      <div className="overflow-hidden  py-8">
+        <h2 className="font-black text-center leading-none tracking-tighter select-none"
+          style={{ fontSize: "clamp(60px, 14vw, 160px)", color: "rgba(255,255,255,0.06)", lineHeight: 0.85 }}>
           nextgrowth
         </h2>
       </div>
 
-      <footer id="contact" className="relative z-20 border-t border-border py-16 px-6 bg-background">
+      <footer id="contact" className="relative z-10 border-t px-6 py-16" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
             <div className="col-span-2 md:col-span-1">
               <Link href="/" className="flex items-center gap-2 mb-4">
-               
-                <span className="text-base font-medium text-foreground">nextgrowth</span>
+                <img src="/images/logo.png" alt="NextGrowth" className="h-9" />
               </Link>
-              <p className="text-sm text-muted-foreground mb-6">Next Step - Next Growth.</p>
-              <div className="flex gap-4">
-                <Link
-                  href="#"
-                  className="w-9 h-9 border border-border rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors"
-                >
-                  <Twitter className="w-4 h-4" />
-                </Link>
-                <Link
-                  href="#"
-                  className="w-9 h-9 border border-border rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors"
-                >
-                  <Linkedin className="w-4 h-4" />
-                </Link>
-                <Link
-                  href="#"
-                  className="w-9 h-9 border border-border rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors"
-                >
-                  <Instagram className="w-4 h-4" />
-                </Link>
-                <Link
-                  href="#"
-                  className="w-9 h-9 border border-border rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors"
-                >
-                  <Facebook className="w-4 h-4" />
-                </Link>
+              <p className="text-sm mb-2 font-bold" style={{ color: "rgba(255,255,255,0.9)" }}>nextgrowth</p>
+              <p className="text-xs mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>Next Step — Next Growth.<br />Affiliate Performance Marketing Platform.</p>
+
+              {/* Newsletter mini */}
+              <div className="flex gap-2 mb-6">
+                <input placeholder="Email của bạn" className="flex-1 px-3 py-2 rounded-xl text-xs outline-none"
+                  style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", color: "#fff" }} />
+                <button className="p-2 rounded-xl" style={{ background: "#F24B21" }}>
+                  <ArrowRight size={14} color="#fff" />
+                </button>
+              </div>
+
+              <div className="flex gap-3">
+                {[Twitter, Linkedin, Instagram, Facebook].map((Icon, i) => (
+                  <Link key={i} href="#"
+                    className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110"
+                    style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)" }}>
+                    <Icon className="w-4 h-4" style={{ color: "rgba(255,255,255,0.6)" }} />
+                  </Link>
+                ))}
               </div>
             </div>
 
-            <div>
-              <h4 className="text-sm font-medium text-foreground mb-4 uppercase tracking-wider">Product</h4>
-              <ul className="space-y-3">
-                {footerLinks.product.map((link, i) => (
-                  <li key={i}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-medium text-foreground mb-4 uppercase tracking-wider">Company</h4>
-              <ul className="space-y-3">
-                {footerLinks.company.map((link, i) => (
-                  <li key={i}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-medium text-foreground mb-4 uppercase tracking-wider">Legal</h4>
-              <ul className="space-y-3">
-                {footerLinks.legal.map((link, i) => (
-                  <li key={i}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-medium text-foreground mb-4 uppercase tracking-wider">Support</h4>
-              <ul className="space-y-3">
-                {footerLinks.support.map((link, i) => (
-                  <li key={i}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {[
+              { title: "Nền tảng", links: footerLinks.platform },
+              { title: "Công ty", links: footerLinks.company },
+              { title: "Pháp lý", links: footerLinks.legal },
+              { title: "Hỗ trợ", links: footerLinks.support },
+            ].map((col, i) => (
+              <div key={i}>
+                <h4 className="text-xs font-bold mb-4 uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.5)" }}>{col.title}</h4>
+                <ul className="space-y-3">
+                  {col.links.map((link, j) => (
+                    <li key={j}>
+                      <Link href={link.href} className="text-sm transition-colors hover:opacity-100"
+                        style={{ color: "rgba(255,255,255,0.5)" }}>
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
 
-          <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-[10px] md:text-sm text-muted-foreground uppercase tracking-wider">
-              © 2026 FIMI. All rights reserved.
+          <div className="pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4"
+            style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+            <p className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
+              © 2026 FIMI Tech Co., Ltd. All rights reserved.
             </p>
-            <p className="text-[10px] md:text-sm text-muted-foreground font-medium">
-              nextgrowth powered by FIMI
-            </p>
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#F24B21" }} />
+              <p className="text-xs font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>
+                nextgrowth powered by FIMI
+              </p>
+            </div>
           </div>
         </div>
       </footer>

@@ -1,165 +1,163 @@
 "use client"
 
-import { Home, Key, Shield } from "lucide-react"
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
+import { Target, TrendingUp, Shield, Users, BarChart3, Zap } from "lucide-react"
 
-const services = [
-  {
-    icon: Home,
-    title: "Detailed listings",
-    description: "HD photos, 360° virtual tours, and complete descriptions for every property.",
-  },
-  {
-    icon: Key,
-    title: "Key management",
-    description: "Secure key handover system and real-time check-in/check-out tracking.",
-  },
+const values = [
   {
     icon: Shield,
-    title: "Secure payments",
-    description: "Protected transactions with tenant guarantee and damage insurance included.",
+    title: "Minh bạch",
+    en: "Transparency",
+    desc: "Dữ liệu tracking, hoa hồng và hiệu quả chiến dịch được công khai minh bạch theo thời gian thực. Không trì hoãn, không mờ ám.",
+    color: "#001980",
+    bg: "#f0f4ff",
+  },
+  {
+    icon: Target,
+    title: "Tuân thủ & Trách nhiệm",
+    en: "Compliance",
+    desc: "Thiết kế luồng chuyển đổi phù hợp compliance tài chính. Kiểm soát nội dung publisher và quản trị rủi ro pháp lý chặt chẽ.",
+    color: "#F24B21",
+    bg: "#fff5f2",
+  },
+  {
+    icon: Users,
+    title: "Đồng hành tăng trưởng",
+    en: "Shared Growth",
+    desc: "Doanh nghiệp tăng trưởng bền vững. Publisher có thu nhập ổn định lâu dài. NextGrowth phát triển cùng toàn bộ hệ sinh thái.",
+    color: "#3AA4F4",
+    bg: "#f0f9ff",
+  },
+  {
+    icon: BarChart3,
+    title: "Hiệu quả thực chất",
+    en: "Real Impact",
+    desc: "Đo lường end-to-end, tối ưu chuyển đổi thực chất — không chạy theo traffic rác, ưu tiên chất lượng hơn số lượng.",
+    color: "#FDBF45",
+    bg: "#fffdf0",
+  },
+  {
+    icon: Zap,
+    title: "Công nghệ làm nền tảng",
+    en: "Technology-Driven",
+    desc: "Tracking chính xác, dashboard realtime, khả năng tích hợp và mở rộng cao — công nghệ tạo lợi thế cạnh tranh bền vững.",
+    color: "#001980",
+    bg: "#f0f4ff",
+  },
+  {
+    icon: TrendingUp,
+    title: "Chuẩn mực & Chuyên nghiệp",
+    en: "Professionalism",
+    desc: "Quy trình rõ ràng, phân cấp publisher minh bạch, đào tạo & chuẩn hóa nội dung — affiliate là một nghề nghiêm túc.",
+    color: "#F24B21",
+    bg: "#fff5f2",
   },
 ]
 
-function AnimatedIcon({ Icon, delay = 0 }: { Icon: any; delay?: number }) {
-  const [isVisible, setIsVisible] = useState(false)
-  const iconRef = useRef<HTMLDivElement>(null)
+function ValueCard({ item, index }: { item: typeof values[0]; index: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.3 },
-    )
-
-    if (iconRef.current) {
-      observer.observe(iconRef.current)
-    }
-
+    const observer = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true) }, { threshold: 0.2 })
+    if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
   }, [])
 
+  const Icon = item.icon
   return (
-    <div ref={iconRef} className="relative">
-      <Icon
-        className={`text-foreground h-16 w-16 ${isVisible ? "animate-draw-icon" : ""}`}
-        strokeWidth={1}
-        style={{
-          strokeDasharray: isVisible ? undefined : 1000,
-          strokeDashoffset: isVisible ? undefined : 1000,
-        }}
-      />
+    <div ref={ref}
+      className="p-6 rounded-2xl transition-all duration-700 hover:shadow-lg group cursor-default"
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(24px)",
+        transitionDelay: `${index * 80}ms`,
+        background: item.bg,
+        border: `1px solid ${item.color}20`,
+      }}>
+      <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110"
+        style={{ background: item.color, boxShadow: `0 4px 16px ${item.color}40` }}>
+        <Icon size={22} color="#fff" />
+      </div>
+      <p style={{ fontSize: 10, color: item.color, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" }} className="mb-1">{item.en}</p>
+      <h3 className="font-bold text-base mb-2" style={{ color: "#001980" }}>{item.title}</h3>
+      <p className="text-sm leading-relaxed" style={{ color: "#6b7280" }}>{item.desc}</p>
     </div>
   )
 }
 
 export function ServicesSection() {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.2 },
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
+    const observer = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true) }, { threshold: 0.1 })
+    if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
   }, [])
 
   return (
-    <section id="how-it-works" className="py-32 px-6 pb-24 relative overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 flex justify-center pointer-events-none z-0">
-        <span className="text-[#001980] font-bold text-center text-[18vw] sm:text-[7vw]  leading-none tracking-tighter  whitespace-nowrap">
-          Sứ mệnh
-        </span>
-      </div>
+    <section id="about" className="py-24 px-6 bg-white">
+      <div className="max-w-7xl mx-auto">
+        {/* Mission Banner */}
+        <div ref={ref} className="relative overflow-hidden rounded-3xl mb-20 p-10 md:p-16"
+          style={{ background: "linear-gradient(135deg, #000d40 0%, #001980 60%, #0028cc 100%)" }}>
+          {/* Decoration */}
+          <div className="absolute top-0 right-0 w-72 h-72 rounded-full opacity-10"
+            style={{ background: "radial-gradient(circle, #3AA4F4 0%, transparent 70%)", transform: "translate(30%, -30%)" }} />
+          <div className="absolute bottom-0 left-20 w-48 h-48 rounded-full opacity-10"
+            style={{ background: "radial-gradient(circle, #FDBF45 0%, transparent 70%)", transform: "translateY(40%)" }} />
 
-      <style jsx>{`
-        @keyframes drawPath {
-          from {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-          }
-          to {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 0;
-          }
-        }
-        :global(.animate-draw-icon) :global(path),
-        :global(.animate-draw-icon) :global(line),
-        :global(.animate-draw-icon) :global(polyline),
-        :global(.animate-draw-icon) :global(circle),
-        :global(.animate-draw-icon) :global(rect) {
-          animation: drawPath 2s ease-out forwards;
-        }
-      `}</style>
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div ref={sectionRef} className="relative px-6 lg:px-8 py-16 lg:py-10 mb-32 overflow-hidden rounded-3xl">
-          {/* Background image that spans full width */}
-          <div className="absolute inset-0 w-full h-full">
-            <img
-              src="/images/7aecbceb-cbd3-4cbd-901c-dd0125d41525.png"
-              alt="Beautiful house"
-              className={`w-full h-full object-cover transition-transform duration-1000 ease-out ${
-                isVisible ? "scale-100" : "scale-110"
-              }`}
-            />
-            {/* Overlay for better text readability */}
-            <div className="absolute inset-0 bg-black/20" />
-          </div>
-
-          {/* Text content on top */}
-          <div className="relative z-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="order-1 lg:order-2">
-              <p className="text-sm uppercase tracking-[0.2em] text-white/80 font-medium mb-4">Our mission</p>
-              <h2 className="font-sans md:text-4xl lg:text-5xl font-medium text-white text-balance mb-8 text-5xl">
-                Next Growth-Next Step
+          <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+            <div className={`transition-all duration-1000 ${visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}`}>
+              <p style={{ fontSize: 11, color: "#3AA4F4", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase" }} className="mb-4">
+                SỨ MỆNH CỦA CHÚNG TÔI
+              </p>
+              <h2 className="font-black text-4xl md:text-4xl leading-tight mb-6" style={{ color: "#fff" }}>
+                Next Step -
+                <span style={{ background: "linear-gradient(135deg, #3AA4F4, #FDBF45)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                  {''} Next Growth
+                </span>
               </h2>
-              <div className="space-y-6 text-white/90 leading-relaxed">
-                <p>
-                 nextgrowth là công ty công nghệ tiên phong trong việc kết nối các giải pháp tài chính hiện đại từ các tổ chức tín dụng đến khách hàng của các đơn vị bán lẻ sản phẩm - dịch vụ (merchant). 
-                </p>
-                <p>
-                  Giúp khách hàng dễ dàng tiếp cận giải pháp tài chính để mua sắm, đồng thời tối ưu hóa doanh thu cho merchant.
-                </p>
+              <p className="text-base leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.75)" }}>
+                NextGrowth là nền tảng <strong style={{ color: "#3AA4F4" }}>Affiliate Performance Marketing</strong> thuần, tập trung vào hiệu quả chuyển đổi và hoa hồng.
+              </p>
+              <p className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.75)" }}>
+                Không vận hành theo mô hình đa cấp, không phân tầng. Chỉ một mục tiêu: <strong style={{ color: "#FDBF45" }}>làm — ghi nhận — trả hoa hồng trực tiếp</strong>.
+              </p>
+            </div>
+            <div className={`transition-all duration-1000 delay-300 ${visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}>
+              <div className="space-y-4">
+                {[
+                  { label: "Doanh nghiệp", desc: "Cần kênh affiliate hiệu quả, kiểm soát được, chi phí minh bạch", color: "#3AA4F4" },
+                  { label: "Publisher", desc: "Muốn làm affiliate đúng nghĩa, tạo chuyển đổi và nhận hoa hồng cao – minh bạch", color: "#FDBF45" },
+                  { label: "Thị trường", desc: "Chuẩn hoá affiliate tài chính, giảm rủi ro, tạo hệ sinh thái lành mạnh", color: "#F24B21" },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-4 p-4 rounded-xl"
+                    style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)" }}>
+                    <div className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ background: item.color }} />
+                    <div>
+                      <p className="font-bold text-sm mb-1" style={{ color: item.color }}>{item.label}</p>
+                      <p className="text-sm" style={{ color: "rgba(255,255,255,0.65)" }}>{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="mt-10"></div>
             </div>
           </div>
         </div>
 
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-normal mb-6 text-balance font-serif">Everything you need</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            A complete platform to manage your rentals from A to Z, whether you're an owner or a tenant.
+        {/* Values Grid */}
+        <div className="text-center mb-12">
+          <p style={{ fontSize: 11, color: "#F24B21", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase" }} className="mb-3">
+            GIÁ TRỊ CỐT LÕI
           </p>
+          <h2 className="font-black text-4xl md:text-5xl" style={{ color: "#001980" }}>
+            6 nguyên tắc vận hành
+          </h2>
         </div>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <div
-              key={index}
-              className="group p-8 rounded-3xl hover:bg-zinc-50 transition-colors duration-300 text-center"
-            >
-              <div className="mb-6 flex justify-center">
-                <AnimatedIcon Icon={service.icon} delay={index * 0.2} />
-              </div>
-              <h3 className="text-xl font-medium mb-3 text-foreground">{service.title}</h3>
-              <p className="text-muted-foreground leading-relaxed text-sm">{service.description}</p>
-            </div>
-          ))}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {values.map((item, i) => <ValueCard key={i} item={item} index={i} />)}
         </div>
       </div>
     </section>

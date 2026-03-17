@@ -1,229 +1,99 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
-import { Menu, X, ArrowUpRight, ArrowRight } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Menu, X, ArrowRight } from "lucide-react"
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
-  const isScrolled = true
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault()
-    const element = document.getElementById(targetId)
-
-    if (element) {
-      const headerOffset = 100
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY
-      const offsetPosition = elementPosition - headerOffset
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      })
+    const el = document.getElementById(targetId)
+    if (el) {
+      const offset = el.getBoundingClientRect().top + window.scrollY - 100
+      window.scrollTo({ top: offset, behavior: "smooth" })
       setIsOpen(false)
     }
   }
 
-  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    })
-  }
+  const navLinks = [
+    { label: "Giới thiệu", id: "about" },
+    { label: "Tính năng", id: "features" },
+    { label: "Hệ sinh thái", id: "principles" },
+    { label: "Đối tác", id: "testimonials" },
+    { label: "FAQ", id: "faq" },
+  ]
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "px-4 pt-4" : ""}`}>
-      <div
-        className={`max-w-7xl mx-auto transition-all duration-300 rounded-2xl ${
-          isScrolled
-            ? "bg-white/70 backdrop-blur-xl border border-zinc-200 px-6 py-3"
-            : "bg-background/90 backdrop-blur-md px-6 py-5"
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-400 ${scrolled ? "px-4 pt-3" : ""}`}>
+      <div className={`max-w-7xl mx-auto transition-all duration-400 ${
+        scrolled
+          ? "rounded-2xl px-6 py-3 border border-[#001980]/20"
+          : "px-6 py-5"
         }`}
-      >
+        style={scrolled ? { background: "rgba(255,255,255,0.95)", backdropFilter: "blur(20px)", boxShadow: "0 4px 24px rgba(0,25,128,0.12)" } : {}}>
         <div className="flex items-center justify-between">
-          <a href="#" onClick={handleLogoClick} className="flex items-center gap-2 cursor-pointer">
-            <img src="/images/logo.png" alt="" className="h-10" />
+          {/* Logo */}
+          <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }) }}
+            className="flex items-center gap-2 cursor-pointer">
+            <img src="/images/logo.png" alt="NextGrowth" className="h-9" />
           </a>
 
+          {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
-            <a
-              href="#how-it-works"
-              onClick={(e) => handleSmoothScroll(e, "how-it-works")}
-              className={`text-sm transition-colors cursor-pointer ${
-                isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Mission
-            </a>
-            <a
-              href="#features"
-              onClick={(e) => handleSmoothScroll(e, "features")}
-              className={`text-sm transition-colors cursor-pointer ${
-                isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Features
-            </a>
-            <a
-              href="#pricing"
-              onClick={(e) => handleSmoothScroll(e, "pricing")}
-              className={`text-sm transition-colors cursor-pointer ${
-                isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Properties
-            </a>
-            <a
-              href="#testimonials"
-              onClick={(e) => handleSmoothScroll(e, "testimonials")}
-              className={`text-sm transition-colors cursor-pointer ${
-                isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Đối tác
-            </a>
-            <a
-              href="#faq"
-              onClick={(e) => handleSmoothScroll(e, "faq")}
-              className={`text-sm transition-colors cursor-pointer ${
-                isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              FAQ
-            </a>
+            {navLinks.map((link) => (
+              <a key={link.id} href={`#${link.id}`}
+                onClick={(e) => handleSmoothScroll(e, link.id)}
+                className="text-sm font-medium transition-colors cursor-pointer hover:opacity-70"
+                style={{ color: scrolled ? "#001980" : "rgba(255,255,255,0.85)" }}>
+                {link.label}
+              </a>
+            ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-1">
-            <button
-              className={`relative flex items-center gap-0 border rounded-full pl-5 pr-1 py-1 transition-all duration-300 group overflow-hidden ${
-                isScrolled ? "border-zinc-300" : "border-border"
-              }`}
-            >
-              <span
-                className={`absolute inset-0 rounded-full scale-x-0 origin-right group-hover:scale-x-100 transition-transform duration-300 ${
-                  isScrolled ? "bg-black" : "bg-foreground"
-                }`}
-              />
-              <span
-                className={`text-sm pr-3 relative z-10 transition-colors duration-300 ${
-                  isScrolled ? "text-black group-hover:text-white" : "text-foreground group-hover:text-background"
-                }`}
-              >
-                List a property
-              </span>
-              <span className="w-8 h-8 rounded-full flex items-center justify-center relative z-10">
-                <ArrowRight
-                  className={`w-4 h-4 group-hover:opacity-0 absolute transition-opacity duration-300 ${
-                    isScrolled ? "text-black" : "text-foreground"
-                  }`}
-                />
-                <ArrowUpRight
-                  className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-300 ${
-                    isScrolled ? "text-black group-hover:text-white" : "text-foreground group-hover:text-background"
-                  }`}
-                />
-              </span>
+          {/* CTA Buttons */}
+          <div className="hidden md:flex items-center gap-3">
+            <a href="#" className="text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+              style={{ color: scrolled ? "#001980" : "rgba(255,255,255,0.8)" }}>
+              Đăng nhập
+            </a>
+            <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm text-white transition-all duration-300 hover:scale-105"
+              style={{ background: "linear-gradient(135deg, #F24B21 0%, #ff6540 100%)", boxShadow: "0 4px 16px rgba(242,75,33,0.35)" }}>
+              Đăng ký ngay
+              <ArrowRight size={15} />
             </button>
           </div>
 
-          <button
-            className={`md:hidden transition-colors duration-300 ${isScrolled ? "text-black" : "text-foreground"}`}
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          {/* Mobile hamburger */}
+          <button className="md:hidden p-2 rounded-xl transition-colors"
+            style={{ color: scrolled ? "#001980" : "#fff" }}
+            onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
 
+        {/* Mobile Nav */}
         {isOpen && (
-          <nav
-            className={`md:hidden mt-6 pb-6 flex flex-col gap-4 border-t pt-6 ${
-              isScrolled ? "border-zinc-200" : "border-border"
-            }`}
-          >
-            <a
-              href="#how-it-works"
-              onClick={(e) => handleSmoothScroll(e, "how-it-works")}
-              className={`transition-colors cursor-pointer ${
-                isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Mission
-            </a>
-            <a
-              href="#features"
-              onClick={(e) => handleSmoothScroll(e, "features")}
-              className={`transition-colors cursor-pointer ${
-                isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Features
-            </a>
-            <a
-              href="#pricing"
-              onClick={(e) => handleSmoothScroll(e, "pricing")}
-              className={`transition-colors cursor-pointer ${
-                isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Properties
-            </a>
-            <a
-              href="#testimonials"
-              onClick={(e) => handleSmoothScroll(e, "testimonials")}
-              className={`transition-colors cursor-pointer ${
-                isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Đối tác
-            </a>
-            <a
-              href="#faq"
-              onClick={(e) => handleSmoothScroll(e, "faq")}
-              className={`transition-colors cursor-pointer ${
-                isScrolled ? "text-zinc-600 hover:text-black" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              FAQ
-            </a>
-            <div
-              className={`flex flex-col gap-3 mt-4 pt-4 border-t ${isScrolled ? "border-zinc-200" : "border-border"}`}
-            >
-              <a href="#" className={isScrolled ? "text-black" : "text-foreground"}>
-                Login
+          <nav className="md:hidden mt-4 pt-4 pb-4 border-t border-[#001980]/10 flex flex-col gap-3">
+            {navLinks.map((link) => (
+              <a key={link.id} href={`#${link.id}`}
+                onClick={(e) => handleSmoothScroll(e, link.id)}
+                className="py-2 text-sm font-medium text-[#001980]">
+                {link.label}
               </a>
-              <button
-                className={`relative flex items-center gap-0 border rounded-full pl-5 pr-1 py-1 w-fit transition-all duration-300 group overflow-hidden ${
-                  isScrolled ? "border-zinc-300" : "border-border"
-                }`}
-              >
-                <span
-                  className={`absolute inset-0 rounded-full scale-x-0 origin-right group-hover:scale-x-100 transition-transform duration-300 ${
-                    isScrolled ? "bg-black" : "bg-foreground"
-                  }`}
-                />
-                <span
-                  className={`text-sm pr-3 relative z-10 transition-colors duration-300 ${
-                    isScrolled ? "text-black group-hover:text-white" : "text-foreground group-hover:text-background"
-                  }`}
-                >
-                  List a property
-                </span>
-                <span className="w-8 h-8 rounded-full flex items-center justify-center relative z-10">
-                  <ArrowRight
-                    className={`w-4 h-4 group-hover:opacity-0 absolute transition-opacity duration-300 ${
-                      isScrolled ? "text-black" : "text-foreground"
-                    }`}
-                  />
-                  <ArrowUpRight
-                    className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-300 ${
-                      isScrolled ? "text-black group-hover:text-white" : "text-foreground group-hover:text-background"
-                    }`}
-                  />
-                </span>
-              </button>
-            </div>
+            ))}
+            <button className="mt-2 flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-sm text-white"
+              style={{ background: "linear-gradient(135deg, #F24B21 0%, #ff6540 100%)" }}>
+              Đăng ký ngay <ArrowRight size={15} />
+            </button>
           </nav>
         )}
       </div>
