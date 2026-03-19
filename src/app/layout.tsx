@@ -2,7 +2,6 @@ import '../styles/globals.css'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 
-
 const montserrat = localFont({
 	src: [
 		{
@@ -135,11 +134,11 @@ export const metadata: Metadata = {
 		icon: [
 			{
 				media: '(prefers-color-scheme: light)',
-				url: '/metadata/logo-small.png'
+				url: '/favico/favicon.ico'
 			},
 			{
 				media: '(prefers-color-scheme: dark)',
-				url: '/metadata/title-icon-negative.png'
+				url: '/favico/favicon.ico'
 			}
 		]
 	},
@@ -167,9 +166,7 @@ export default function RootLayout({
 			translate='no'
 			className={`${montserrat.variable} ${montserrat.className}`}
 		>
-			<body>
-	{children}
-			</body>
+			<body>{children}</body>
 		</html>
 	)
 }

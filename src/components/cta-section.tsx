@@ -89,7 +89,7 @@ export function CTASection() {
             <div className="space-y-3">
               {forPublisher.map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <CheckCircle size={16} color="#F24B21" className="flex-shrink-0 mt-0.5" />
+                  <CheckCircle size={16} color="#F24B21" className="shrink-0 mt-0.5" />
                   <span className="text-sm" style={{ color: "#374151" }}>{item}</span>
                 </div>
               ))}

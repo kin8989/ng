@@ -1,0 +1,14 @@
+services:
+  fimi_web:
+    container_name: landing-page
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '4005:3000'
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - HOSTNAME=0.0.0.0
+    restart: unless-stopped
